@@ -40,10 +40,12 @@ Dataset tersebut diupdate 5 tahun terakhir oleh pengguna AZATHOTH, sehingga anim
 
 - Membaca dataset
 `data <- read.csv("./dataset/anime_cleaned.csv")`
+
 ![dataset](/img/r_read_data.png)
 
 - Atribut
 
 - Feature selection
 `df <- data.frame(data[,c(1:2,7:9,14:21,23,28:29)])`
+
 ![df](/img/df.png)
