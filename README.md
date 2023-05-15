@@ -38,14 +38,14 @@ Dataset yang diambil adalah anime_cleande.csv, karena dataset tersebut lebih mud
 ![kaggle](/img/kaggle.png)
 Dataset tersebut diupdate 5 tahun terakhir oleh pengguna AZATHOTH, sehingga anime yang tercatat paling baru adalah antara 2018-2019.
 
-- Membaca dataset
+- Membaca dataset  
 `data <- read.csv("./dataset/anime_cleaned.csv")`
 
 ![dataset](/img/r_read_data.png)
 
 - Atribut
 
-- Feature selection
+- Feature selection  
 `df <- data.frame(data[,c(1:2,7:9,14:21,23,28:29)])`
 
 ![df](/img/df.png)
