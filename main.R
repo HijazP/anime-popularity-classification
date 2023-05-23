@@ -72,8 +72,12 @@ df_raw <- df_raw[df_raw$genre != "Hentai", ]
 df_raw <- df_raw[df_raw$rating != "R+ - Mild Nudity", ]
 df_raw <- df_raw[df_raw$rating != "Rx - Hentai", ]
 
-# Praproses lanjutan (menggunakan Weka)
-# Menghilangkan atribut title dan id
+# Praproses lanjutan dan eksplorasi menggunakan Weka
+## Menghapus id dan tiitle
+df_clean <- data.frame(df_raw[,c(3:16)])
+## Menyimpan data bersih untuk praproses lanjutan
+## dan eksplorasi menggunakan Weka
+write.csv(df_clean, "./dataset/data_clean.csv")
 
 # Membaca data yang sudah dibersihkan
 data <- read.csv("./dataset/data_clean.csv")
@@ -98,13 +102,18 @@ print(sum(df$genre == "")) # Ada 4 buah records dengan genre yang bersifat empty
 print(which(df$genre == "")) # Mengecek indeks dari records yang genre nya empty
 # -> daftar index: 2056, 2861, 4419, dan 5476
 # cek judul -> df_raw$title[index]
+for (i in 1:nrow(df)) {
+  if (df$genre[i] == "") {
+    print(df_raw$title[i])
+  }
+}
 
 # Mengisi missing value pada atribut genre
 # Pengisian dilakukan manual dengan mengambil referensi di internet
-df$genre[2056] <- "some_value"
-df$genre[2861] <- "some_value"
-df$genre[4419] <- "some_value"
-df$genre[5746] <- "some_value"
+df$genre[2056] <- "Drama, Fantasy" # Title : Genbanojou
+df$genre[2861] <- "School, Seinen" # Title : Match Shoujo
+df$genre[4419] <- "Supernatural" # Title : Kyoto Animation: Megane-hen
+df$genre[5746] <- "Kids" # Title : Season's Greetings from Dwarf
 
 # Memeriksa missing value pada atribut studio
 print(sum(is.na(df$studio)))
