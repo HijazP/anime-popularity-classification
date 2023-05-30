@@ -163,6 +163,7 @@ df$genre <- NULL
 df$X <- NULL
 df <- cbind(df, encoded_genre)
 write.csv(df, "./dataset/data_clean_final.csv")
+write.csv(encoded_genre, "./dataset/genre_one_hot_encoded.csv")
 
 
 # =============================================================================================================
