@@ -94,11 +94,7 @@ df_clean <- data.frame(df_raw[,c(3:16)])
 write.csv(df_clean, "./data fix/data_clean.csv")
 
 ## Membaca data yang sudah dibersihkan
-<<<<<<< HEAD
 data <- read.csv("./data fix/data_clean.csv")
-=======
-data <- read.csv("./dataset/data_clean.csv")
->>>>>>> c974776795189616d6df573a3ec2476ae11baaee
 df <- data.frame(data)
 df <- df[, -1]
 
@@ -166,13 +162,8 @@ df$studio <- filtered_studio$studio
 df$genre <- NULL
 df$X <- NULL
 df <- cbind(df, encoded_genre)
-<<<<<<< HEAD
 write.csv(df, "./data fix/data_clean_final.csv")
 write.csv(encoded_genre, "./data fix/genre_one_hot_encoded.csv")
-=======
-write.csv(df, "./dataset/data_clean_final.csv")
-write.csv(encoded_genre, "./dataset/genre_one_hot_encoded.csv")
->>>>>>> c974776795189616d6df573a3ec2476ae11baaee
 
 
 # =============================================================================================================
@@ -180,13 +171,12 @@ write.csv(encoded_genre, "./dataset/genre_one_hot_encoded.csv")
 
 # 3.) Data Splitting
 ## Membaca data
-<<<<<<< HEAD
 dataset <- read.csv('./data fix/data_clean_final.csv')
 df <- data.frame(dataset)
 df$X <- NULL
 
-##Buat Weight score per anime (score/score-by)
-####init 
+## Buat Weight score per anime (score/score-by)
+#### Init 
 summary(data$score)
 min = 0
 median = 6.98
@@ -209,13 +199,6 @@ df = data.frame(df[,-c(6,7)])
 df = data.frame(df[,-c(10)])
 df = cbind(w_score,df)
 
-
-=======
-dataset <- read.csv('./dataset/data_clean_final.csv')
-df <- data.frame(dataset)
-df$X <- NULL
-
->>>>>>> c974776795189616d6df573a3ec2476ae11baaee
 ## Diskritisasi variabel target popularity dengan equal binding, n = 3 (populer, cukup populer, dan tidak populer)
 ### Tentukan jumlah kelas yang diinginkan
 n_classes <- 3
@@ -283,15 +266,9 @@ library(rpart)
 # alasan: kemungkinan karena rentang nilai nya yang berbeda jauh dengan atribut lain
 # solusi: normalisasi atribut members
 rpart_formula <- as.formula(
-<<<<<<< HEAD
   paste("popularity_category ~ rating + type + source + episodes + w_score + favorites +",
         paste(colnames(df)[10:51],
               collapse = " + ")))
-=======
-  paste("popularity_category ~ rating + type + source + episodes + score + favorites +",
-  paste(colnames(df)[12:52],
-  collapse = " + ")))
->>>>>>> c974776795189616d6df573a3ec2476ae11baaee
 # rpart_formula <- as.formula(
 #   paste("popularity_category ~ rating + type + source + episodes + score + favorites + scored_by + rank + ",
 #   paste(colnames(df)[12:52],
@@ -305,19 +282,12 @@ model <- rpart(rpart_formula, data = train_data)
 
 print(model)
 
-<<<<<<< HEAD
-
-=======
->>>>>>> c974776795189616d6df573a3ec2476ae11baaee
 predicted_labels <- predict(model, newdata = test_data, type="class")
 
 test_labels <- as.factor(test_data$popularity_category)
 predicted_labels <- factor(predicted_labels, levels = levels(test_labels))
 
-<<<<<<< HEAD
 
-=======
->>>>>>> c974776795189616d6df573a3ec2476ae11baaee
 ## 5.) Evaluasi model
 library(caret)
 
