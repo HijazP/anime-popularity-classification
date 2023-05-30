@@ -4,26 +4,26 @@ oneHotEncoding <- function(col, prefix, col_name) {
   unique_val <- trimws(unlist(unique_val))
   unique_val <- unique(unique_val)
   unique_val_list <- as.list(unique_val)
-  
+
   encoded_data <- data.frame(col)
   colnames(encoded_data) <- col_name
   for (val in unique_val) {
     encoded_data[[val]] <- 0
   }
-  
+
   for (i in 1:nrow(encoded_data)) {
     for (val in unique_val) {
       encoded_data[i, val] <- ifelse(grepl(val, encoded_data[i, col_name]), 1, 0)
     }
   }
-  
+
   encoded_data <- encoded_data[, -1]
-  
+
   col_names = colnames(encoded_data)
   for (i in 1:length(col_names)) {
     col_names[i] <- paste0(prefix, col_names[i])
   }
-  
+
   colnames(encoded_data) <- col_names
   encoded_data <- data.frame(encoded_data)
   return(encoded_data)
@@ -34,20 +34,20 @@ oneHotEncoding <- function(col, prefix, col_name) {
 filterMultiVal <- function(col, col_name) {
   df_col <- data.frame(col)
   colnames(df_col) <- col_name
-  
+
   df_col$total_elements <- sapply(strsplit(col, ","), length)
   max_row <- which.max(df_col$total_elements)
   total_rows_multi_val <- nrow(subset(df_col, total_elements >= 2))
-  
+
   filtered_col <- sapply(strsplit(df_col[, 1], ","), `[`, 1)
-  
+
   filtered_col <- data.frame(filtered_col)
   colnames(filtered_col) <- col_name
-  
+
   filtered_col$total_elements <- sapply(strsplit(filtered_col[, 1], ","), length)
-  
+
   max_row_filtered <- which.max(filtered_col$total_elements)
-  
+
   return(list(df_col[max_row, ], total_rows_multi_val, filtered_col[max_row_filtered, ], filtered_col))
 }
 
@@ -192,7 +192,7 @@ cut_points <- seq(min_value, max_value, by = bin_width)
 cut_points <- append(cut_points, max_value + 1)
 
 ### Lakukan diskritisasi
-df$popularity_category <- cut(df$popularity, breaks = cut_points, labels = c("populer", "cukup_populer", "tidak populer"))
+df$popularity_category <- cut(df$popularity, breaks = cut_points, labels = c("populer", "cukup_populer", "kurang_populer"))
 
 ### Cetak hasil
 print(df)
@@ -241,18 +241,20 @@ library(rpart)
 # alasan: kemungkinan karena rentang nilai nya yang berbeda jauh dengan atribut lain
 # solusi: normalisasi atribut members
 rpart_formula <- as.formula(
-  paste("popularity_category ~ type + source + episodes + score + favorites + rank + ",
+  paste("popularity_category ~ rating + type + source + episodes + score + favorites +",
   paste(colnames(df)[12:52],
   collapse = " + ")))
 # rpart_formula <- as.formula(
-#   paste("popularity_category ~ type + source + episodes + score + favorites + scored_by + rank + ",
+#   paste("popularity_category ~ rating + type + source + episodes + score + favorites + scored_by + rank + ",
 #   paste(colnames(df)[12:52],
 #   collapse = " + ")))
 # rpart_formula <- as.formula(paste("popularity_category ~ ", paste(colnames(df)[12:52], collapse = " + ")))
 # rpart_formula <- as.formula(paste("popularity_category ~ members +", paste(colnames(df)[12:52], collapse = " + ")))
 # rpart_formula <- as.formula(paste("popularity_category ~ members"))
 # rpart_formula <- as.formula(paste("popularity_category ~ scored_by"))
+# rpart_formula <- as.formula(paste("popularity_category ~ rank"))
 model <- rpart(rpart_formula, data = train_data)
+
 print(model)
 
 predicted_labels <- predict(model, newdata = test_data, type="class")
