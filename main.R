@@ -275,6 +275,18 @@ print(paste("Akurasi model: ", accuracy))
 library(rpart.plot)
 rpart.plot(model)
 
+
+# ALTERNATIF seleksi fitur
+# # Menggunakan metode Information Gain untuk seleksi atribut
+# ctrl <- trainControl(method = "none")
+# info_gain <- caret::varImp(train_data, scale = FALSE, 
+#                            options = list(xval = 0, repeats = 1, verboseIter = FALSE),
+#                            model = NULL, oblique = FALSE, use.train = TRUE,
+#                            split = FALSE, ...)
+# 
+# # Menampilkan hasil seleksi atribut
+# print(info_gain)
+
 # ALTERNATIF untuk improvisasi akurasi
 ## a. Backward Chaining untuk Feature Selection
 ## b. K-Fold Cross Validation untuk Splitting Data
