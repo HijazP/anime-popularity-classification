@@ -217,9 +217,9 @@ which(!complete.cases(df))
 df$popularity <- NULL
 
 ## cek total unique value pada setiap atribut [memprediksi ukuran tree]
-# unique_counts <- sapply(df, function(x) length(unique(x)))
-# sorted_counts <- sort(unique_counts, decreasing = TRUE)
-# print(sorted_counts)
+unique_counts <- sapply(df, function(x) length(unique(x)))
+sorted_counts <- sort(unique_counts, decreasing = TRUE)
+print(sorted_counts)
 
 
 # atribut yang bisa dipakai: type (chr) + source (chr) + episodes (int) + score (num) + favorites (int) + scored_by (num) + rank (num)
@@ -248,7 +248,7 @@ write.csv(df, "./dataset/data_clean_final.csv")
 write.csv(encoded_genre, "./dataset/genre_one_hot_encoded.csv")
 
 
-# =============================================================================================================
+# =================================================================ende============================================
 
 
 # 3.) Data Splitting
@@ -294,6 +294,17 @@ model <- rpart(popularity_category ~ ., data = train_data, cp = 0.01364412)
 # 5.) Evaluasi model
 
 ## Confusion Matrix
+### Training
+predicted_train <- predict(model, newdata=train_data, type="class")
+train_labels <- as.factor(train_data$popularity_category)
+predicted_train <- factor(predicted_train, levels=levels(train_labels))
+
+confusion_matrix_train <- confusionMatrix(predicted_train, train_labels)
+accuracy_train <- confusion_matrix_train$overall['Accuracy']
+
+print(confusion_matrix_train)
+print(paste("Akurasi latih: ", accuracy_train))
+
 ### Test / Validation
 predicted_labels <- predict(model, newdata = test_data, type="class")
 test_labels <- as.factor(test_data$popularity_category)
@@ -303,18 +314,7 @@ confusion_matrix <- confusionMatrix(predicted_labels, test_labels)
 accuracy <- confusion_matrix$overall['Accuracy']
 
 print(confusion_matrix)
-print(paste("Akurasi model: ", accuracy))
-
-### Training
-predicted_train <- predict(model, newdata=train_data, type="class")
-train_labels <- as.factor(train_data$popularity_category)
-predicted_train <- factor(predicted_train, levels=levels(train_labels))
-
-confusion_matrix_train <- confusionMatrix(predicted_train, train_labels)
-accuracy_train <- confusion_matrix_train$overall['Accuracy']
-
-print(confusion_matrix)
-print(paste("Akurasi model: ", accuracy_train))
+print(paste("Akurasi uji: ", accuracy))
 
 ## Learning Curve
 train_data_lc <- train_data

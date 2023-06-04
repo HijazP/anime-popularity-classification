@@ -283,6 +283,17 @@ model <- rpart(popularity_category ~ ., data = train_data, cp = 0.005926251)
 
 
 ## Confusion Matrix
+### Training
+predicted_train <- predict(model, newdata=train_data, type="class")
+train_labels <- as.factor(train_data$popularity_category)
+predicted_train <- factor(predicted_train, levels=levels(train_labels))
+
+confusion_matrix_train <- confusionMatrix(predicted_train, train_labels)
+accuracy_train <- confusion_matrix_train$overall['Accuracy']
+
+print(confusion_matrix_train)
+print(paste("Akurasi latih: ", accuracy_train))
+
 ### Test / Validation
 predicted_labels <- predict(model, newdata = test_data, type="class")
 test_labels <- as.factor(test_data$popularity_category)
@@ -292,18 +303,7 @@ confusion_matrix <- confusionMatrix(predicted_labels, test_labels)
 accuracy <- confusion_matrix$overall['Accuracy']
 
 print(confusion_matrix)
-print(paste("Akurasi model: ", accuracy))
-
-### Training
-predicted_train <- predict(model, newdata=train_data, type="class")
-train_labels <- as.factor(train_data$popularity_category)
-predicted_train <- factor(predicted_train, levels=levels(train_labels))
-
-confusion_matrix_train <- confusionMatrix(predicted_train, train_labels)
-accuracy_train <- confusion_matrix_train$overall['Accuracy']
-
-print(confusion_matrix)
-print(paste("Akurasi model: ", accuracy_train))
+print(paste("Akurasi uji: ", accuracy))
 
 ## Learning Curve
 train_data_lc <- train_data
